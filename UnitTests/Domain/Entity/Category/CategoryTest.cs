@@ -1,3 +1,4 @@
+using Domain.Exceptions;
 using DomainEntity = Domain.Entity;
 
 namespace UnitTests.Domain.Entity.Category;
@@ -52,5 +53,26 @@ public class CategoryTest
         Assert.True(category.CreatedAt > dateTimeBefore);
         Assert.True(category.CreatedAt < dateTimeAfter);
         Assert.Equal(category.IsActive, isActive);
+    }
+
+    [Theory(DisplayName = nameof(InstantiateErrorWhenNameIsEmpty))]
+    [Trait("Domain", "Category")]
+    [InlineData("")]
+    [InlineData(null)]
+    [InlineData("    ")]
+    public void InstantiateErrorWhenNameIsEmpty(string? name)
+    {
+        void action() => new DomainEntity.Category(name!, "Category description");
+        var exception = Assert.Throws<EntityValidationException>(action);
+        Assert.Equal("Name should not be empty or null", exception.Message);
+    }
+
+    [Fact(DisplayName = nameof(InstantiateErrorWhenDescriptionIsNull))]
+    [Trait(name: "Domain", "Category")]
+    public void InstantiateErrorWhenDescriptionIsNull()
+    {
+        void action() => new DomainEntity.Category("Category Name", null!);
+        var exception = Assert.Throws<EntityValidationException>(action);
+        Assert.Equal("Description should not be empty or null", exception.Message);
     }
 }

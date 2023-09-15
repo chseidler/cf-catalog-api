@@ -1,3 +1,5 @@
+using Domain.Exceptions;
+
 namespace Domain.Entity;
 
 public class Category
@@ -19,5 +21,19 @@ public class Category
         Description = description;
         IsActive = isActive;
         CreatedAt = DateTime.Now;
+
+        Validate();
+    }
+
+    public void Validate()
+    {
+        if (String.IsNullOrWhiteSpace(Name))
+        {
+            throw new EntityValidationException($"{nameof(Name)} should not be empty or null");
+        }
+        if (Description == null)
+        {
+            throw new EntityValidationException($"{nameof(Description)} should not be empty or null");
+        }
     }
 }
