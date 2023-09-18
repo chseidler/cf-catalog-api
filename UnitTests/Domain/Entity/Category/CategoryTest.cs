@@ -56,7 +56,7 @@ public class CategoryTest
     }
 
     [Theory(DisplayName = nameof(InstantiateErrorWhenNameIsEmpty))]
-    [Trait("Domain", "Category")]
+    [Trait("Domain", "Category - Aggregates")]
     [InlineData("")]
     [InlineData(null)]
     [InlineData("    ")]
@@ -68,11 +68,24 @@ public class CategoryTest
     }
 
     [Fact(DisplayName = nameof(InstantiateErrorWhenDescriptionIsNull))]
-    [Trait(name: "Domain", "Category")]
+    [Trait(name: "Domain", "Category - Aggregates")]
     public void InstantiateErrorWhenDescriptionIsNull()
     {
         void action() => new DomainEntity.Category("Category Name", null!);
         var exception = Assert.Throws<EntityValidationException>(action);
         Assert.Equal("Description should not be empty or null", exception.Message);
+    }
+
+    [Theory(DisplayName = nameof(InstantiateErrorWhenNameIsLessThan3Characters))]
+    [Trait("Domain", "Category - Aggregates")]
+    [InlineData("1")]
+    [InlineData("12")]
+    [InlineData("ca")]
+    [InlineData("a")]
+    public void InstantiateErrorWhenNameIsLessThan3Characters(string invalidName)
+    {
+        void action() => new DomainEntity.Category(invalidName, "Category Description");
+        var exception = Assert.Throws<EntityValidationException>(action);
+        Assert.Equal("Name should be at least 3 characters long", exception.Message);
     }
 }
