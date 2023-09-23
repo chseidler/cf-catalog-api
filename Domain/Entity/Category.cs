@@ -1,11 +1,10 @@
 using Domain.Exceptions;
+using Domain.SeedWork;
 
 namespace Domain.Entity;
 
-public class Category
+public class Category : AggregateRoot
 {
-    public Guid Id { get; private set; }
-
     public string Name { get; private set; }
 
     public string Description { get; private set; }
@@ -14,9 +13,8 @@ public class Category
 
     public DateTime CreatedAt { get; private set; }
 
-    public Category(string name, string description, bool isActive = true)
+    public Category(string name, string description, bool isActive = true) : base()
     {
-        Id = Guid.NewGuid();
         Name = name;
         Description = description;
         IsActive = isActive;
