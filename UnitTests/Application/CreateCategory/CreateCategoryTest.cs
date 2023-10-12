@@ -1,3 +1,4 @@
+using Application.Interfaces;
 using Domain.Entity;
 using Domain.Repository;
 using FluentAssertions;
