@@ -3,7 +3,7 @@ using Domain.Entity;
 using Domain.Repository;
 using FluentAssertions;
 using Moq;
-using UseCases = Application.UseCases.CreateCategory;
+using UseCases = Application.UseCases.Category.CreateCategory;
 
 namespace UnitTests.Application.CreateCategory;
 
@@ -17,18 +17,18 @@ public class CreateCategoryTest
         var unitOfWorkMock = new Mock<IUnitOfWork>();
         var useCase = new UseCases.CreateCategory(repositoryMock.Object, unitOfWorkMock.Object);
 
-        var input = CreateCategoryInput("Category Name", "Category Description", true);
+        var input = new UseCases.CreateCategoryInput("Category Name", "Category Description", true);
 
         var output = await useCase.Handle(input, CancellationToken.None);
 
         repositoryMock.Verify(repository => repository.Insert(It.IsAny<Category>(), It.IsAny<CancellationToken>()), Times.Once);
         unitOfWorkMock.Verify(uow => uow.Commit(It.IsAny<CancellationToken>()), Times.Once);
 
-        output.ShouldNotBeNull();
+        output.Should().NotBeNull();
         output.Name.Should().Be("Category Name");
         output.Description.Should().Be("Category Description");
         output.IsActive.Should().Be(true);
-        (output.Id != null && output.Id != Guid.Empty).Should.BeTrue();
-        (output.CreatedAt != null && output.CreatedAt != default).Should.BeTrue();
+        output.Id.Should().NotBeEmpty();
+        output.CreatedAt.Should().NotBeSameDateAs(default);
     }
 }
