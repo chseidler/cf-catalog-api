@@ -42,10 +42,7 @@ public class CreateCategoryTest
     [MemberData(nameof(CreateCategoryTestDataGenerator.GetInvalidInputs), parameters: 24, MemberType = typeof(CreateCategoryTestDataGenerator))]
     public async void ThrowWhenCantInstantiateCategory(CreateCategoryInput input, string exceptionMessage)
     {
-        var useCase = new UseCases.CreateCategory(
-            _fixture.GetRepositoryMock().Object,
-            _fixture.GetUnitOfWorkMock().Object
-        );
+        var useCase = new UseCases.CreateCategory(_fixture.GetRepositoryMock().Object, _fixture.GetUnitOfWorkMock().Object);
 
         Func<Task> task = async () => await useCase.Handle(input, CancellationToken.None);
 
