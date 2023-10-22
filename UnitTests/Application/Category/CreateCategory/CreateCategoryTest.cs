@@ -39,15 +39,8 @@ public class CreateCategoryTest
 
     [Theory(DisplayName = nameof(ThrowWhenCantInstantiateCategory))]
     [Trait("Application", "CreateCategory - Use Cases")]
-    [MemberData(
-        nameof(CreateCategoryTestDataGenerator.GetInvalidInputs),
-        parameters: 24,
-        MemberType = typeof(CreateCategoryTestDataGenerator)
-    )]
-    public async void ThrowWhenCantInstantiateCategory(
-        CreateCategoryInput input,
-        string exceptionMessage
-    )
+    [MemberData(nameof(CreateCategoryTestDataGenerator.GetInvalidInputs), parameters: 24, MemberType = typeof(CreateCategoryTestDataGenerator))]
+    public async void ThrowWhenCantInstantiateCategory(CreateCategoryInput input, string exceptionMessage)
     {
         var useCase = new UseCases.CreateCategory(
             _fixture.GetRepositoryMock().Object,
