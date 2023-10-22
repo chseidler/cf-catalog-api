@@ -10,8 +10,8 @@ public class CreateCategory : ICreateCategory
 
     public CreateCategory(ICategoryRepository categoryRepository, IUnitOfWork unitOfWork)
     {
-        _categoryRepository = categoryRepository;
         _unitOfWork = unitOfWork;
+        _categoryRepository = categoryRepository;
     }
 
     public async Task<CreateCategoryOutput> Handle(CreateCategoryInput input, CancellationToken cancellationToken)
